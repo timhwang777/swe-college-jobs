@@ -1,8 +1,7 @@
 name: Add or Update Job
 
 on:
-  issues:
-    types: ["labeled"]
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   update-or-add-job:
