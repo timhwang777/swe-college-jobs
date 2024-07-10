@@ -1,0 +1,75 @@
+name: Sync and Notify Upstream Repository
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Runs every day at midnight PT
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  sync:
+    if: github.repository_owner == 'timhwang777'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Add upstream repository
+        run: git remote add upstream https://github.com/speedyapply/swe-college-jobs.git
+
+      - name: Fetch upstream changes
+        run: git fetch upstream
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git fetch upstream main
+          if [ -n "$(git diff --name-only upstream/main | grep -vE '^.github/')" ]; then
+            echo "changes"
+          else
+            echo "no changes"
+          fi
+        continue-on-error: true
+
+      - name: Set Output Variable
+        id: set_output
+        run: |
+          if [ -n "$(git diff --name-only upstream/main | grep -vE '^.github/')" ]; then
+            echo "need merge"
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "no need to merge"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Merge upstream changes
+        if: steps.set_output.outputs.changes == 'true'
+        run: |
+          git checkout main
+          git merge upstream/main --allow-unrelated-histories --no-commit
+          git commit -m "Merge changes from upstream"
+        continue-on-error: true
+
+      - name: Push changes to fork
+        if: steps.set_output.outputs.changes == 'true'
+        run: git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify via email
+        if: steps.set_output.outputs.changes == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: 'swe-college-jobs Repository Updated'
+          body: 'The upstream repository has been updated. Changes have been fetched and merged into your fork.'
+          to: 'job-boards@timhwang.net'
+          from: 'timhwang777@gmail.com'
