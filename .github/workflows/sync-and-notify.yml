@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
-        with:
-          node-version: "20"
 
       - name: Set up Git
         run: |
