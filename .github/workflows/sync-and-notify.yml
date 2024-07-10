@@ -52,7 +52,6 @@ jobs:
         if: steps.set_output.outputs.changes == 'true'
         run: |
           git merge upstream/main --allow-unrelated-histories --no-commit
-          git commit -m "Merge changes from upstream"
         continue-on-error: true
 
       - name: Push changes to fork
