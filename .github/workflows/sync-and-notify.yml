@@ -28,7 +28,7 @@ jobs:
         id: changes
         run: |
           git fetch upstream main
-          if [ -n "$(git diff --name-only main upstream/main | grep -vE '^.github/')" ]; then
+          if [ -n "$(git diff --name-only origin/main upstream/main | grep -vE '^.github/')" ]; then
             echo "changes"
           else
             echo "no changes"
@@ -38,7 +38,7 @@ jobs:
       - name: Set Output Variable
         id: set_output
         run: |
-          if [ -n "$(git diff --name-only main upstream/main | grep -vE '^.github/')" ]; then
+          if [ -n "$(git diff --name-only origin/main upstream/main | grep -vE '^.github/')" ]; then
             echo "need merge"
             echo "changes=true" >> $GITHUB_OUTPUT
           else
@@ -49,7 +49,7 @@ jobs:
       - name: Merge upstream changes
         if: steps.set_output.outputs.changes == 'true'
         run: |
-          git checkout main
+          git checkout origin/main
           git merge upstream/main --allow-unrelated-histories --no-commit
           git commit -m "Merge changes from upstream"
         continue-on-error: true
