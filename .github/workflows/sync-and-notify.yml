@@ -69,6 +69,6 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: 'swe-college-jobs Repository Updated'
-          html_body: file://$(pwd)/email-notify.html
+          html_body: file://${{ github.ref }}/email-notify.html
           to: 'job-boards@timhwang.net'
           from: 'timhwang777/swe-college-jobs'
