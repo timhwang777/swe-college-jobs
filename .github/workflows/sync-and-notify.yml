@@ -61,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Notify via email
-        #if: steps.set_output.outputs.changes == 'true'
+        if: steps.set_output.outputs.changes == 'true'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
