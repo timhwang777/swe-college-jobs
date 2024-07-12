@@ -9,7 +9,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
 
-  env:
+    env:
       EMAIL_HTML_FILE: $(pwd)/email-notify.html
 
     steps:
