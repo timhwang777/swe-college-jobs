@@ -71,7 +71,7 @@ jobs:
           subject: 'swe-college-jobs Repository Updated'
           to: 'job-boards@timhwang.net'
           from: 'timhwang777/swe-college-jobs'
-          body: |
+          html_body: |
               <!DOCTYPE html>
               <html lang="en">
                 <head>
