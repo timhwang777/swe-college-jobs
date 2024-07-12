@@ -2,7 +2,7 @@ name: Sync and Notify Upstream Repository
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # Runs every day at midnight PT
+    - cron: '0 14,2 * * *'  # Runs every day at midnight PT
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
@@ -69,6 +69,6 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: 'swe-college-jobs Repository Updated'
-          body: 'The upstream repository has been updated. Changes have been fetched and merged into your fork.'
+          html_body: email-notify.html
           to: 'job-boards@timhwang.net'
-          from: 'timhwang777@gmail.com'
+          from: 'timhwang777/swe-college-jobs'
