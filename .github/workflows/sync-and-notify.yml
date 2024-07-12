@@ -95,7 +95,7 @@ jobs:
                             margin: 0 auto;
                         }
                         h1 {
-                            color: #007bff;
+                            color: #ff4f00;
                         }
                         p {
                             line-height: 1.6;
