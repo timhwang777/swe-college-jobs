@@ -9,6 +9,9 @@ jobs:
   sync:
     runs-on: ubuntu-latest
 
+  env:
+      EMAIL_HTML_FILE: $(pwd)/email-notify.html
+
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
@@ -69,6 +72,6 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: 'swe-college-jobs Repository Updated'
-          html_body: file://email-notify.html
+          html_body: file://${{ env.EMAIL_HTML_FILE }}
           to: 'job-boards@timhwang.net'
           from: 'timhwang777/swe-college-jobs'
