@@ -1,8 +1,8 @@
 name: Sync and Notify Upstream Repository
 
 on:
-  schedule:
-    - cron: '0 14,2 * * *'  # Runs every day at midnight PT
+  # schedule:
+  #  - cron: '0 14,2 * * *'  # Runs every day at midnight PT
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
